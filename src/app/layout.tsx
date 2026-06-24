@@ -5,7 +5,15 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Mindful Consultations — Business Automation Demo",
   description:
-    "A premium field demo for showing local businesses how faster lead response can protect opportunities."
+    "A premium field demo for showing local businesses how faster lead response, AI classification, and owner alerts keep opportunities from going cold.",
+  metadataBase: new URL("https://demo.mindfultech.services"),
+  openGraph: {
+    title: "Mindful Consultations — Business Automation Demo",
+    description:
+      "See how faster lead response, AI classification, and owner alerts keep opportunities from going cold.",
+    url: "https://demo.mindfultech.services",
+    siteName: "Mindful Consultations"
+  }
 };
 
 const navItems = [
