@@ -29,23 +29,32 @@ const faqs = [
   }
 ];
 
-export function ObjectionFAQ() {
+export function ObjectionFAQ({ dark = false }: { dark?: boolean }) {
   return (
-    <section className="page-shell py-16">
-      <div className="max-w-3xl">
-        <p className="eyebrow">Common Questions</p>
-        <h2 className="mt-3 text-3xl font-black tracking-normal text-ink">
-          Clear answers before the next step.
-        </h2>
-      </div>
-      <div className="mt-8 grid gap-3 md:grid-cols-2">
-        {faqs.map((faq) => (
-          <article key={faq.question} className="panel p-5">
-            <h3 className="text-base font-bold text-ink">{faq.question}</h3>
-            <p className="mt-3 text-sm leading-6 text-stone-700">{faq.answer}</p>
-          </article>
-        ))}
-      </div>
-    </section>
+    <div className="grid gap-3 md:grid-cols-2">
+      {faqs.map((faq) => (
+        <article
+          key={faq.question}
+          className={
+            dark
+              ? "rounded-lg border border-white/10 bg-white/5 p-5"
+              : "panel p-5"
+          }
+        >
+          <h3
+            className={`text-base font-bold ${dark ? "text-cream" : "text-ink"}`}
+          >
+            {faq.question}
+          </h3>
+          <p
+            className={`mt-3 text-sm leading-6 ${
+              dark ? "text-stone-400" : "text-stone-700"
+            }`}
+          >
+            {faq.answer}
+          </p>
+        </article>
+      ))}
+    </div>
   );
 }
