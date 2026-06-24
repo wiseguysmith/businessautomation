@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+.env
+.env*.local
+!.env.example
+netlify
+.netlify
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tsbuildinfo
+.claude-source/
