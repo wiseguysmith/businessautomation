@@ -21,6 +21,7 @@ export function QuoteCTA({ bookingUrl }: { bookingUrl: string }) {
     whatsApp: "",
     suggestedPackage: "Starter Setup"
   });
+  const [industry, setIndustry] = useState("Real Estate");
   const [saved, setSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -42,6 +43,16 @@ export function QuoteCTA({ bookingUrl }: { bookingUrl: string }) {
     } catch {
       // Ignore old local demo data.
     }
+
+    try {
+      const rawPayload = window.localStorage.getItem(STORAGE_KEYS.demoPayload);
+      if (rawPayload) {
+        const p = JSON.parse(rawPayload) as { industry?: string };
+        if (p.industry) setIndustry(p.industry);
+      }
+    } catch {
+      // ignore
+    }
   }, []);
 
   function update<K extends keyof QuoteLead>(key: K, value: QuoteLead[K]) {
@@ -62,7 +73,7 @@ export function QuoteCTA({ bookingUrl }: { bookingUrl: string }) {
           email: lead.email,
           whatsapp: lead.whatsApp,
           interestLevel: "Ready to talk pricing",
-          demoType: "Real Estate",
+          demoType: industry,
           suggestedPackage: lead.suggestedPackage,
           status
         })

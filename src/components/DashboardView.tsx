@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { AIDraftCard } from "./AIDraftCard";
 import { AIImpactPanel } from "./AIImpactPanel";
+import { PricingPanel } from "./PricingPanel";
 import { DemoDisclaimer } from "./DemoDisclaimer";
 import { HumanApprovalCard } from "./HumanApprovalCard";
 import { LeadClassificationCard } from "./LeadClassificationCard";
@@ -125,6 +126,13 @@ export function DashboardView() {
 
       {/* AI Impact Panel */}
       {revealed && <AIImpactPanel />}
+
+      {/* Pricing — visible after reveal so prospect can see packages */}
+      {revealed && (
+        <div className="rounded-xl border border-black/8 bg-white/60 p-6 sm:p-8">
+          <PricingPanel />
+        </div>
+      )}
 
       {/* CTAs — only after reveal */}
       {revealed && (
