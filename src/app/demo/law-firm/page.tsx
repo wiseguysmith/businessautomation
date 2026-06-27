@@ -1,9 +1,9 @@
 import { DemoWizard } from "@/components/DemoWizard";
 
-export default function RealEstateDemoPage() {
+export default function LawFirmDemoPage() {
   return (
     <main className="page-shell py-10 sm:py-16">
-      <DemoWizard defaultIndustryId="real-estate" />
+      <DemoWizard defaultIndustryId="law-firm" />
     </main>
   );
 }

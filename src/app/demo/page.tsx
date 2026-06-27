@@ -1,13 +1,9 @@
-import { DemoModeSelector } from "@/components/DemoModeSelector";
-import { DemoDisclaimer } from "@/components/DemoDisclaimer";
+import { DemoWizard } from "@/components/DemoWizard";
 
 export default function DemoPage() {
   return (
-    <main className="page-shell py-10 sm:py-14">
-      <DemoModeSelector />
-      <div className="mt-6">
-        <DemoDisclaimer />
-      </div>
+    <main className="page-shell py-10 sm:py-16">
+      <DemoWizard />
     </main>
   );
 }

@@ -7,6 +7,8 @@ import {
   BedDouble,
   Building2,
   Check,
+  Home,
+  Scale,
   UtensilsCrossed,
   X
 } from "lucide-react";
@@ -166,30 +168,53 @@ export default function HomePage() {
               The same AI classification and urgency scoring adapts its labels, scenarios,
               and recommended actions to each industry's reality.
             </p>
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {/* Real Estate — live */}
               <div className="relative rounded-xl border-2 border-ink bg-white/80 p-6 shadow-soft">
                 <span className="absolute right-4 top-4 rounded-sm bg-gold px-2 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-ink">
-                  V1 Live
+                  Live
                 </span>
                 <Building2 className="h-6 w-6 text-gold" aria-hidden="true" />
                 <h3 className="mt-4 text-lg font-black text-ink">Real Estate</h3>
                 <p className="mt-2 text-xs leading-5 text-stone-600">
-                  Buyer, seller, renter, and investor classification for agencies in
-                  Tamarindo, Costa Rica.
+                  Buyer, seller, renter, and investor classification for agencies.
                 </p>
-                <Link
-                  href="/demo/real-estate"
-                  className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-ink underline-offset-2 hover:text-gold"
-                >
-                  Run the demo <ArrowRight className="h-3 w-3" aria-hidden="true" />
+                <Link href="/demo/real-estate" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-ink underline-offset-2 hover:text-gold">
+                  Run demo <ArrowRight className="h-3 w-3" aria-hidden="true" />
                 </Link>
               </div>
 
-              {/* Hotels — preview */}
-              <div className="relative rounded-xl border border-black/10 bg-white/40 p-6 opacity-70">
+              {/* Law Firm — live */}
+              <div className="relative rounded-xl border-2 border-ink bg-white/80 p-6 shadow-soft">
+                <span className="absolute right-4 top-4 rounded-sm bg-gold px-2 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-ink">
+                  Live
+                </span>
+                <Scale className="h-6 w-6 text-gold" aria-hidden="true" />
+                <h3 className="mt-4 text-lg font-black text-ink">Law Firm</h3>
+                <p className="mt-2 text-xs leading-5 text-stone-600">
+                  New client intake, matter triage, and existing client follow-up.
+                </p>
+                <Link href="/demo/law-firm" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-ink underline-offset-2 hover:text-gold">
+                  Run demo <ArrowRight className="h-3 w-3" aria-hidden="true" />
+                </Link>
+              </div>
+
+              {/* Property Management — preview */}
+              <div className="relative rounded-xl border border-black/10 bg-white/40 p-6 opacity-60">
                 <span className="absolute right-4 top-4 rounded-sm border border-black/15 px-2 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-stone-500">
-                  V2 Preview
+                  Coming Soon
+                </span>
+                <Home className="h-6 w-6 text-stone-400" aria-hidden="true" />
+                <h3 className="mt-4 text-lg font-black text-ink">Property Management</h3>
+                <p className="mt-2 text-xs leading-5 text-stone-500">
+                  Maintenance requests, tenant inquiries, and owner reporting.
+                </p>
+              </div>
+
+              {/* Hotels — preview */}
+              <div className="relative rounded-xl border border-black/10 bg-white/40 p-6 opacity-60">
+                <span className="absolute right-4 top-4 rounded-sm border border-black/15 px-2 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-stone-500">
+                  Coming Soon
                 </span>
                 <BedDouble className="h-6 w-6 text-stone-400" aria-hidden="true" />
                 <h3 className="mt-4 text-lg font-black text-ink">Hotels</h3>
@@ -198,19 +223,13 @@ export default function HomePage() {
                   suggestions.
                 </p>
               </div>
+            </div>
 
-              {/* Restaurants — preview */}
-              <div className="relative rounded-xl border border-black/10 bg-white/40 p-6 opacity-70">
-                <span className="absolute right-4 top-4 rounded-sm border border-black/15 px-2 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-stone-500">
-                  V2 Preview
-                </span>
-                <UtensilsCrossed className="h-6 w-6 text-stone-400" aria-hidden="true" />
-                <h3 className="mt-4 text-lg font-black text-ink">Restaurants</h3>
-                <p className="mt-2 text-xs leading-5 text-stone-500">
-                  Review sentiment, reservation handling, promo follow-up, and negative
-                  review escalation.
-                </p>
-              </div>
+            <div className="mt-6">
+              <Link href="/demo" className="inline-flex items-center gap-2 rounded-md border border-black/15 px-4 py-2.5 text-sm font-bold text-ink transition hover:border-gold hover:bg-gold/8">
+                Choose your industry
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
             </div>
           </div>
         </div>
