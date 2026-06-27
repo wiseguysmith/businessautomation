@@ -15,10 +15,12 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
   background:
     linear-gradient(180deg, rgba(251, 247, 239, 0.95) 0%, rgba(239, 231, 216, 0.75) 100%);
   color: var(--foreground);
