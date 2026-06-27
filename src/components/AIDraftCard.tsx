@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@/lib/analytics";
 import { DemoResult } from "@/lib/types";
 import { Languages, MessageSquareText } from "lucide-react";
 import { useState } from "react";
@@ -45,7 +46,7 @@ export function AIDraftCard({ result }: { result: DemoResult }) {
           </button>
           <button
             type="button"
-            onClick={() => setLang("es")}
+            onClick={() => { setLang("es"); track("spanish_toggled", {}); }}
             className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold transition ${
               lang === "es"
                 ? "bg-ink text-cream shadow-sm"

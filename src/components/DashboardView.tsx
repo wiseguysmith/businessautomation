@@ -6,7 +6,8 @@ import {
 } from "@/lib/demo";
 import { STORAGE_KEYS } from "@/lib/storage";
 import type { DemoResult, RealEstateDemoPayload } from "@/lib/types";
-import { ArrowRight, RotateCcw } from "lucide-react";
+import { track } from "@/lib/analytics";
+import { ArrowRight, PlayCircle, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { AIDraftCard } from "./AIDraftCard";
@@ -27,6 +28,7 @@ export function DashboardView() {
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
+    track("dashboard_viewed", {});
     const savedPayload = window.localStorage.getItem(STORAGE_KEYS.demoPayload);
     const savedResult = window.localStorage.getItem(STORAGE_KEYS.demoResult);
 
@@ -44,6 +46,19 @@ export function DashboardView() {
 
   return (
     <div className="space-y-6">
+
+      {/* Field reset bar — always visible for quick restart */}
+      <div className="flex items-center justify-between rounded-lg border border-black/8 bg-white/60 px-4 py-2.5">
+        <p className="text-xs font-semibold text-stone-500">Live Demo Result</p>
+        <Link
+          href="/demo"
+          className="flex items-center gap-1.5 rounded-md bg-ink px-3 py-1.5 text-xs font-bold text-cream transition hover:bg-stone-800"
+          onClick={() => track("demo_started", { reset: true })}
+        >
+          <PlayCircle className="h-3.5 w-3.5" aria-hidden="true" />
+          New Demo
+        </Link>
+      </div>
 
       {/* Hero header — business name front and center */}
       <section className="rounded-xl bg-ink px-6 py-8 text-cream shadow-soft sm:px-8 sm:py-10">

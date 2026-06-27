@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@/lib/analytics";
 import { STORAGE_KEYS } from "@/lib/storage";
 import { ArrowUpRight, CalendarDays } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
@@ -198,6 +199,7 @@ export function QuoteCTA({ bookingUrl }: { bookingUrl: string }) {
             target="_blank"
             rel="noreferrer"
             onClick={() => {
+              track("booking_cta_clicked", {});
               void captureQuote("Quote Requested");
             }}
           >

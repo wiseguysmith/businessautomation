@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@/lib/analytics";
 import { defaultRealEstatePayload } from "@/lib/demo";
 import { getIndustry, industryRegistry, type IndustryConfig } from "@/lib/industryConfig";
 import { STORAGE_KEYS } from "@/lib/storage";
@@ -39,10 +40,12 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
   function handleNameSubmit(e: FormEvent) {
     e.preventDefault();
     if (!businessName.trim()) return;
+    track("demo_started", { industry: industry.id, businessName: businessName.trim() });
     setStep("scenario");
   }
 
   function pickScenario(s: Scenario) {
+    track("scenario_selected", { industry: industry.id, scenario: s.id });
     setScenario(s);
     setCustomInquiry(s.inquiry);
     runDemo(s, s.inquiry);
@@ -88,6 +91,7 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
       window.clearInterval(progress);
       setActiveWorkflowStep(steps.length);
       setWorkflowDone(true);
+      track("demo_completed", { industry: industry.id, scenario: scenario.id, businessName: businessName.trim() });
       window.setTimeout(() => router.push("/dashboard"), 900);
     }
   }
@@ -114,6 +118,7 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
               key={ind.id}
               type="button"
               onClick={() => {
+                track("industry_selected", { industry: ind.id });
                 setIndustry(ind);
                 setScenario(ind.scenarios[0]);
                 setStep("name");

@@ -29,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body>
         <header className="sticky top-0 z-40 bg-ink/95 backdrop-blur">
           <nav className="page-shell flex h-14 items-center justify-between">
@@ -50,7 +50,7 @@ export default function RootLayout({
                 </Link>
               ))}
             </div>
-            <Link href="/demo/real-estate" className="hidden rounded-md bg-gold px-4 py-2 text-sm font-bold text-ink transition hover:bg-[#d9be7a] sm:inline-flex">
+            <Link href="/demo" className="rounded-md bg-gold px-4 py-2 text-sm font-bold text-ink transition hover:bg-[#d9be7a]">
               Run Demo
             </Link>
           </nav>
