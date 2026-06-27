@@ -60,7 +60,10 @@ export function NotificationMoment({
               <BellRing className="h-4 w-4" aria-hidden="true" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-bold uppercase tracking-[0.12em] text-stone-500">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-gold">
+                AI Inbox Manager
+              </p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-400">
                 Owner Notification
               </p>
               {notificationSent && !fallback ? (

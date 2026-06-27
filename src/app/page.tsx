@@ -1,3 +1,4 @@
+import { AIWorkforceSection } from "@/components/AIWorkforceSection";
 import { DemoDisclaimer } from "@/components/DemoDisclaimer";
 import { HeroSection } from "@/components/HeroSection";
 import { ObjectionFAQ } from "@/components/ObjectionFAQ";
@@ -94,15 +95,18 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* AI Workforce Section */}
+      <AIWorkforceSection />
+
       {/* divider */}
       <div className="page-shell">
         <div className="h-px bg-black/8" />
       </div>
 
-      {/* 02 — The Demo */}
+      {/* 03 — The Demo */}
       <section className="page-shell py-16 sm:py-20">
         <div className="grid gap-8 lg:grid-cols-[48px_1fr]">
-          <span className="text-sm font-black tracking-[0.1em] text-gold">02</span>
+          <span className="text-sm font-black tracking-[0.1em] text-gold">03</span>
           <div>
             <p className="eyebrow">The Demo</p>
             <h2 className="mt-3 max-w-md text-4xl font-black leading-[1.05] tracking-normal text-ink">
@@ -149,10 +153,10 @@ export default function HomePage() {
         <div className="h-px bg-black/8" />
       </div>
 
-      {/* 03 — Industries */}
+      {/* 04 — Industries */}
       <section className="page-shell py-16 sm:py-20">
         <div className="grid gap-8 lg:grid-cols-[48px_1fr]">
-          <span className="text-sm font-black tracking-[0.1em] text-gold">03</span>
+          <span className="text-sm font-black tracking-[0.1em] text-gold">04</span>
           <div>
             <p className="eyebrow">Industries</p>
             <h2 className="mt-3 max-w-md text-4xl font-black leading-[1.05] tracking-normal text-ink">
@@ -217,10 +221,10 @@ export default function HomePage() {
         <div className="h-px bg-black/8" />
       </div>
 
-      {/* 04 — The Path */}
+      {/* 05 — The Path */}
       <section className="page-shell py-16 sm:py-20">
         <div className="grid gap-8 lg:grid-cols-[48px_1fr]">
-          <span className="text-sm font-black tracking-[0.1em] text-gold">04</span>
+          <span className="text-sm font-black tracking-[0.1em] text-gold">05</span>
           <div>
             <p className="eyebrow">The Path</p>
             <h2 className="mt-3 max-w-md text-4xl font-black leading-[1.05] tracking-normal text-ink">

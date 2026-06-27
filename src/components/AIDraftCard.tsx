@@ -15,10 +15,13 @@ export function AIDraftCard({ result }: { result: DemoResult }) {
           <MessageSquareText className="h-5 w-5" aria-hidden="true" />
         </div>
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-stone-500">
-            AI Draft Response
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-gold">
+            AI Sales Assistant
           </p>
-          <h2 className="text-xl font-black text-ink">Ready for approval</h2>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-stone-400">
+            Draft Response
+          </p>
+          <h2 className="mt-1 text-xl font-black text-ink">Ready for your approval</h2>
         </div>
       </div>
 

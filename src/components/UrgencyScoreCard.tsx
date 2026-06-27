@@ -12,6 +12,9 @@ export function UrgencyScoreCard({
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-gold">
+            AI Intake Specialist
+          </p>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-400">
             Urgency Score
           </p>
           <div className="mt-3 flex items-end gap-2">
