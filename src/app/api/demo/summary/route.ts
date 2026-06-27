@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const webhookUrl = process.env.N8N_SUMMARY_WEBHOOK_URL || process.env.N8N_REAL_ESTATE_WEBHOOK_URL;
+  const webhookUrl = process.env.N8N_SUMMARY_WEBHOOK_URL;
   const summaryPayload = {
     submissionType: "summary",
     name: payload.name?.trim(),
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     demoDate: new Date().toISOString(),
     suggestedPackage: payload.suggestedPackage || "Starter Setup",
     status: payload.status || "Interested",
-    source: "Mindful Consultations Demo"
+    source: "Mindful Tech Demo"
   };
 
   if (!webhookUrl) {

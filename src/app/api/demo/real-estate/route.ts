@@ -48,7 +48,7 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         ...payload,
         industry: "Real Estate",
-        source: payload.source || "Mindful Consultations Demo"
+        source: payload.source || "Mindful Tech Demo"
       }),
       signal: controller.signal
     });

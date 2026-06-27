@@ -13,8 +13,8 @@ export function HumanApprovalCard() {
             The system prepares the response. Your team stays in control.
           </h2>
           <p className="mt-3 text-sm leading-6 text-stone-700">
-            V1 drafts customer-facing messages for review. It does not auto-send replies
-            to prospects.
+            AI drafts customer-facing messages for your review. It does not auto-send
+            replies to prospects.
           </p>
         </div>
       </div>

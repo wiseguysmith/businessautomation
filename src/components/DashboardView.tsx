@@ -10,6 +10,7 @@ import { ArrowRight, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { AIDraftCard } from "./AIDraftCard";
+import { AIImpactPanel } from "./AIImpactPanel";
 import { DemoDisclaimer } from "./DemoDisclaimer";
 import { HumanApprovalCard } from "./HumanApprovalCard";
 import { LeadClassificationCard } from "./LeadClassificationCard";
@@ -53,8 +54,9 @@ export function DashboardView() {
         <p className="mt-4 max-w-xl text-sm leading-6 text-stone-300">
           New {payload.channel} inquiry from{" "}
           <span className="font-semibold text-cream">{payload.customerName}</span>.
-          The system classified the lead, scored urgency, drafted a response, logged it,
-          and prepared the owner notification — in seconds.
+          Your AI workforce — intake specialist, sales assistant, inbox manager —
+          classified the lead, scored urgency, drafted a response, logged it, and
+          prepared your notification. All in seconds.
         </p>
       </section>
 
@@ -105,6 +107,9 @@ export function DashboardView() {
           )}
         </div>
       </div>
+
+      {/* AI Impact Panel */}
+      {revealed && <AIImpactPanel />}
 
       {/* CTAs — only after reveal */}
       {revealed && (

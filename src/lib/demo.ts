@@ -78,7 +78,7 @@ export const defaultRealEstatePayload: RealEstateDemoPayload = {
   ownerEmail: "",
   ownerWhatsApp: "",
   interestLevel: "",
-  source: "Mindful Consultations Demo"
+  source: "Mindful Tech Demo"
 };
 
 export function createOpportunitySnapshot(

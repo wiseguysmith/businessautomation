@@ -3,7 +3,7 @@ import { ObjectionFAQ } from "@/components/ObjectionFAQ";
 import { QuoteCTA } from "@/components/QuoteCTA";
 
 export default function QuotePage() {
-  const bookingUrl = process.env.MINDFUL_BOOKING_URL || "";
+  const bookingUrl = process.env.MINDFUL_BOOKING_URL || "https://calendly.com/mindful_tech";
 
   return (
     <main className="page-shell py-10 sm:py-14">

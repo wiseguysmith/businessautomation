@@ -66,7 +66,7 @@ export function RealEstateDemoForm() {
     const payload: RealEstateDemoPayload = {
       ...form,
       industry: "Real Estate",
-      source: "Mindful Consultations Demo"
+      source: "Mindful Tech Demo"
     };
 
     const progress = window.setInterval(() => {

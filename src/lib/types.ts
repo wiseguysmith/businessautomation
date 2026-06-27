@@ -47,7 +47,7 @@ export interface RealEstateDemoPayload {
   demoType?: DemoMode;
   suggestedPackage?: string;
   followUpStatus?: string;
-  source: "Mindful Consultations Demo";
+  source: "Mindful Tech Demo";
   summaryRequested?: boolean;
 }
 

@@ -3,16 +3,16 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Mindful Consultations — Business Automation Demo",
+  title: "Mindful Tech — AI Business Transformation Assessment",
   description:
-    "A premium field demo for showing local businesses how faster lead response, AI classification, and owner alerts keep opportunities from going cold.",
+    "See how AI-powered lead intake, classification, and owner alerts give your business a workforce that never sleeps.",
   metadataBase: new URL("https://demo.mindfultech.services"),
   openGraph: {
-    title: "Mindful Consultations — Business Automation Demo",
+    title: "Mindful Tech — AI Business Transformation Assessment",
     description:
-      "See how faster lead response, AI classification, and owner alerts keep opportunities from going cold.",
+      "See how AI-powered lead intake, classification, and owner alerts give your business a workforce that never sleeps.",
     url: "https://demo.mindfultech.services",
-    siteName: "Mindful Consultations"
+    siteName: "Mindful Tech"
   }
 };
 
@@ -36,7 +36,7 @@ export default function RootLayout({
             <Link href="/" className="flex min-h-11 items-center gap-2.5 leading-none">
               <span className="h-2 w-2 flex-shrink-0 rounded-full bg-gold" aria-hidden="true" />
               <span className="text-sm font-black uppercase tracking-[0.16em] text-cream">
-                Mindful Consultations
+                Mindful Tech
               </span>
             </Link>
             <div className="hidden items-center gap-1 sm:flex">
@@ -62,11 +62,11 @@ export default function RootLayout({
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 flex-shrink-0 rounded-full bg-gold" aria-hidden="true" />
                 <span className="text-sm font-black uppercase tracking-[0.16em] text-cream">
-                  Mindful Consultations
+                  Mindful Tech
                 </span>
               </div>
               <p className="mt-2 text-xs text-stone-500">
-                A Mindful Tech demo environment. Calm over chaos.
+                AI Business Transformation. mindfultech.services
               </p>
             </div>
             <div className="flex flex-col gap-1 text-right">

@@ -79,7 +79,7 @@ export default function HomePage() {
                 </ul>
               </div>
               <div className="rounded-xl border border-gold/30 bg-gold/5 p-5">
-                <p className="eyebrow mb-4">With Mindful Consultations</p>
+                <p className="eyebrow mb-4">With Mindful Tech AI</p>
                 <ul className="space-y-3">
                   {afterItems.map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-stone-800">
