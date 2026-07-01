@@ -14,6 +14,14 @@ interface SummaryPayload {
   demoType?: string;
   suggestedPackage?: string;
   status?: string;
+  leadType?: string;
+  urgencyScore?: number;
+  urgencyLabel?: string;
+  estimatedOpportunity?: string;
+  draftResponse?: string;
+  spanishDraftResponse?: string;
+  recommendedAction?: string;
+  riskNote?: string;
 }
 
 export async function POST(request: Request) {
@@ -50,7 +58,15 @@ export async function POST(request: Request) {
     demoDate: new Date().toISOString(),
     suggestedPackage: payload.suggestedPackage || "Starter Setup",
     status: payload.status || "Interested",
-    source: "Mindful Tech Demo"
+    source: "Mindful Tech Demo",
+    leadType: payload.leadType || "",
+    urgencyScore: payload.urgencyScore ?? "",
+    urgencyLabel: payload.urgencyLabel || "",
+    estimatedOpportunity: payload.estimatedOpportunity || "",
+    draftResponse: payload.draftResponse || "",
+    spanishDraftResponse: payload.spanishDraftResponse || "",
+    recommendedAction: payload.recommendedAction || "",
+    riskNote: payload.riskNote || ""
   };
 
   if (!webhookUrl) {

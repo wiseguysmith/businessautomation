@@ -4,8 +4,8 @@ import { track } from "@/lib/analytics";
 import { defaultRealEstatePayload } from "@/lib/demo";
 import { getIndustry, industryRegistry, type IndustryConfig } from "@/lib/industryConfig";
 import { STORAGE_KEYS } from "@/lib/storage";
-import type { RealEstateDemoPayload, Scenario } from "@/lib/types";
-import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
+import type { DemoResult, RealEstateDemoPayload, Scenario } from "@/lib/types";
+import { ArrowRight, BriefcaseBusiness, CheckCircle2, Loader2, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -20,6 +20,9 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
     getIndustry(defaultIndustryId ?? "real-estate")
   );
   const [businessName, setBusinessName] = useState("");
+  const [ownerName, setOwnerName] = useState("");
+  const [ownerEmail, setOwnerEmail] = useState("");
+  const [ownerWhatsApp, setOwnerWhatsApp] = useState("");
   const [scenario, setScenario] = useState<Scenario>(industry.scenarios[0]);
   const [customInquiry, setCustomInquiry] = useState("");
   const [showCustomize, setShowCustomize] = useState(false);
@@ -30,8 +33,16 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
     const saved = window.localStorage.getItem(STORAGE_KEYS.snapshotInput);
     if (!saved) return;
     try {
-      const snap = JSON.parse(saved) as { businessName?: string };
+      const snap = JSON.parse(saved) as {
+        businessName?: string;
+        ownerName?: string;
+        ownerEmail?: string;
+        ownerWhatsApp?: string;
+      };
       if (snap.businessName) setBusinessName(snap.businessName);
+      if (snap.ownerName) setOwnerName(snap.ownerName);
+      if (snap.ownerEmail) setOwnerEmail(snap.ownerEmail);
+      if (snap.ownerWhatsApp) setOwnerWhatsApp(snap.ownerWhatsApp);
     } catch {
       // ignore
     }
@@ -40,7 +51,21 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
   function handleNameSubmit(e: FormEvent) {
     e.preventDefault();
     if (!businessName.trim()) return;
-    track("demo_started", { industry: industry.id, businessName: businessName.trim() });
+    if (!ownerName.trim() || !ownerEmail.trim()) return;
+    const contact = {
+      businessName: businessName.trim(),
+      ownerName: ownerName.trim(),
+      ownerEmail: ownerEmail.trim(),
+      ownerWhatsApp: ownerWhatsApp.trim()
+    };
+    window.localStorage.setItem(STORAGE_KEYS.snapshotInput, JSON.stringify(contact));
+    window.localStorage.setItem(STORAGE_KEYS.summaryLead, JSON.stringify({
+      businessName: contact.businessName,
+      ownerName: contact.ownerName,
+      email: contact.ownerEmail,
+      whatsApp: contact.ownerWhatsApp
+    }));
+    track("demo_started", { industry: industry.id, businessName: contact.businessName });
     setStep("scenario");
   }
 
@@ -66,6 +91,14 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
       budget: s.budget,
       timeline: s.timeline,
       propertyType: s.propertyType,
+      ownerName: ownerName.trim(),
+      ownerEmail: ownerEmail.trim(),
+      ownerWhatsApp: ownerWhatsApp.trim(),
+      interestLevel: "Interested - snapshot generated",
+      demoType: "Street Demo",
+      suggestedPackage: "Starter Setup",
+      followUpStatus: "Summary Sent",
+      summaryRequested: true,
       source: "Mindful Tech Demo"
     };
 
@@ -80,19 +113,54 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
-      const result = await res.json();
+      const result = (await res.json()) as DemoResult;
       window.localStorage.setItem(STORAGE_KEYS.demoPayload, JSON.stringify(payload));
       window.localStorage.setItem(STORAGE_KEYS.demoResult, JSON.stringify(result));
+      await sendGeneratedSnapshot(payload, result);
     } catch {
       const fallback = industry.createFallbackResult(payload);
       window.localStorage.setItem(STORAGE_KEYS.demoPayload, JSON.stringify(payload));
       window.localStorage.setItem(STORAGE_KEYS.demoResult, JSON.stringify(fallback));
+      await sendGeneratedSnapshot(payload, fallback);
     } finally {
       window.clearInterval(progress);
       setActiveWorkflowStep(steps.length);
       setWorkflowDone(true);
       track("demo_completed", { industry: industry.id, scenario: scenario.id, businessName: businessName.trim() });
       window.setTimeout(() => router.push("/dashboard"), 900);
+    }
+  }
+
+  async function sendGeneratedSnapshot(payload: RealEstateDemoPayload, result: DemoResult) {
+    if (!payload.ownerName || !payload.ownerEmail) return;
+
+    try {
+      await fetch("/api/demo/summary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: payload.ownerName,
+          businessName: payload.businessName,
+          email: payload.ownerEmail,
+          whatsapp: payload.ownerWhatsApp,
+          interestLevel: payload.interestLevel || "Interested - snapshot generated",
+          painPoint: payload.inquiry,
+          demoType: payload.industry,
+          suggestedPackage: payload.suggestedPackage || "Starter Setup",
+          status: "Summary Sent",
+          leadType: result.leadType,
+          urgencyScore: result.urgencyScore,
+          urgencyLabel: result.urgencyLabel,
+          estimatedOpportunity: result.estimatedOpportunity,
+          draftResponse: result.draftResponse,
+          spanishDraftResponse: result.spanishDraftResponse,
+          recommendedAction: result.recommendedAction,
+          riskNote: result.riskNote
+        })
+      });
+      track("summary_submitted", { industry: payload.industry, businessName: payload.businessName });
+    } catch {
+      // Keep the live demo moving even if the email workflow is unavailable.
     }
   }
 
@@ -165,25 +233,67 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
           Who are we running this for?
         </h1>
         <p className="mt-4 text-sm leading-6 text-stone-600">
-          Enter the business name and your AI workforce will process a real lead live.
+          Enter the business and recipient details. Your generated Opportunity Snapshot
+          will be sent to this email automatically when the AI finishes.
         </p>
-        <form onSubmit={handleNameSubmit} className="mt-8">
-          <input
-            autoFocus
-            className="field-input w-full text-lg font-semibold"
-            placeholder={
-              industry.id === "law-firm"
-                ? "e.g. Tamarindo Legal Group"
-                : "e.g. Tamarindo Luxury Realty"
-            }
-            value={businessName}
-            onChange={(e) => setBusinessName(e.target.value)}
-            required
-          />
+        <form onSubmit={handleNameSubmit} className="mt-8 grid gap-4">
+          <label>
+            <span className="field-label">Business name</span>
+            <input
+              autoFocus
+              className="field-input mt-2 w-full text-lg font-semibold"
+              placeholder={
+                industry.id === "law-firm"
+                  ? "e.g. Tamarindo Legal Group"
+                  : "e.g. Tamarindo Luxury Realty"
+              }
+              value={businessName}
+              onChange={(e) => setBusinessName(e.target.value)}
+              required
+            />
+          </label>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label>
+              <span className="field-label">Recipient name</span>
+              <input
+                className="field-input mt-2"
+                value={ownerName}
+                onChange={(e) => setOwnerName(e.target.value)}
+                placeholder="First name"
+                required
+              />
+            </label>
+            <label>
+              <span className="field-label">Recipient email</span>
+              <input
+                className="field-input mt-2"
+                type="email"
+                value={ownerEmail}
+                onChange={(e) => setOwnerEmail(e.target.value)}
+                placeholder="you@yourbusiness.com"
+                required
+              />
+            </label>
+          </div>
+          <label>
+            <span className="field-label">
+              WhatsApp <span className="font-normal normal-case text-stone-400">(optional)</span>
+            </span>
+            <input
+              className="field-input mt-2"
+              value={ownerWhatsApp}
+              onChange={(e) => setOwnerWhatsApp(e.target.value)}
+              placeholder="+506 ..."
+            />
+          </label>
+          <p className="flex items-start gap-2 rounded-md bg-teal/10 p-3 text-xs font-semibold leading-5 text-teal">
+            <Mail className="mt-0.5 h-4 w-4 flex-none" aria-hidden="true" />
+            Your generated Opportunity Snapshot will be sent here.
+          </p>
           <button
             type="submit"
-            className="primary-button mt-4 w-full text-base"
-            disabled={!businessName.trim()}
+            className="primary-button w-full text-base"
+            disabled={!businessName.trim() || !ownerName.trim() || !ownerEmail.trim()}
           >
             Continue
             <ArrowRight className="h-5 w-5" aria-hidden="true" />
@@ -213,7 +323,8 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
           <span className="text-gold">{businessName}</span>?
         </h1>
         <p className="mt-3 text-sm leading-6 text-stone-600">
-          Pick a scenario — your AI workforce handles the rest.
+          Pick a scenario, then your digital employee will generate the result and
+          send the snapshot automatically.
         </p>
 
         <div className="mt-8 grid gap-3">
@@ -229,8 +340,12 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
                   <p className="text-base font-black text-ink">{s.title}</p>
                   <p className="mt-1 text-sm text-stone-500">{s.description}</p>
                 </div>
-                <ArrowRight className="h-5 w-5 flex-shrink-0 text-stone-300 transition group-hover:text-gold" aria-hidden="true" />
+                <BriefcaseBusiness className="h-5 w-5 flex-shrink-0 text-stone-300 transition group-hover:text-gold" aria-hidden="true" />
               </div>
+              <span className="mt-4 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.12em] text-gold">
+                Put My Digital Employee to Work
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </span>
             </button>
           ))}
         </div>
@@ -251,7 +366,7 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
               onClick={() => runDemo(scenario, customInquiry)}
               className="primary-button mt-4 w-full"
             >
-              Run with custom inquiry
+              Put My Digital Employee to Work
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </button>
           </div>
@@ -280,7 +395,7 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
           {businessName}
         </h1>
         <p className="mt-2 text-sm text-stone-400">
-          {scenario.title} · {scenario.customerName}
+          {scenario.title} · Snapshot sending to {ownerEmail}
         </p>
 
         <div className="mx-auto mt-8 max-w-xs space-y-3 text-left">

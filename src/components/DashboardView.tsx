@@ -17,7 +17,6 @@ import { DemoDisclaimer } from "./DemoDisclaimer";
 import { HumanApprovalCard } from "./HumanApprovalCard";
 import { LeadClassificationCard } from "./LeadClassificationCard";
 import { NotificationMoment } from "./NotificationMoment";
-import { SendSummaryCTA } from "./SendSummaryCTA";
 import { UrgencyScoreCard } from "./UrgencyScoreCard";
 import { WorkflowTimeline } from "./WorkflowTimeline";
 
@@ -137,7 +136,21 @@ export function DashboardView() {
       {/* CTAs — only after reveal */}
       {revealed && (
         <div className="grid gap-4 lg:grid-cols-[1fr_0.8fr]">
-          <SendSummaryCTA compact />
+          <article className="panel p-5">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-teal">
+              Opportunity Snapshot Sent
+            </p>
+            <h2 className="mt-3 text-xl font-black text-ink">
+              Your digital employee delivered the result.
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-stone-600">
+              The generated snapshot was sent to{" "}
+              <span className="font-semibold text-ink">
+                {payload.ownerEmail || "the email entered before the demo"}
+              </span>{" "}
+              and logged for follow-up.
+            </p>
+          </article>
           <div className="space-y-4">
             <article className="panel p-5">
               <p className="text-xs font-bold uppercase tracking-[0.14em] text-stone-500">
@@ -151,7 +164,7 @@ export function DashboardView() {
                 running for your business.
               </p>
               <Link href="/quote" className="primary-button mt-5 w-full">
-                Request Setup Quote
+                Book My Automation Consult
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </article>

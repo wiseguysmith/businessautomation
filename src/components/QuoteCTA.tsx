@@ -214,7 +214,7 @@ export function QuoteCTA({ bookingUrl }: { bookingUrl: string }) {
               void captureQuote("Quote Requested");
             }}
           >
-            Book Mindful Tech Setup Call
+            Book My Automation Consult
             <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
           </a>
         ) : (

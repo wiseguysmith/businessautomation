@@ -51,6 +51,17 @@ export interface RealEstateDemoPayload {
   summaryRequested?: boolean;
 }
 
+export interface SummaryResultPayload {
+  leadType?: string;
+  urgencyScore?: number;
+  urgencyLabel?: string;
+  estimatedOpportunity?: string;
+  draftResponse?: string;
+  spanishDraftResponse?: string;
+  recommendedAction?: string;
+  riskNote?: string;
+}
+
 export interface DemoResult {
   leadType: string;
   urgencyScore: number;
