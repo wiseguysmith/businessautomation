@@ -84,7 +84,7 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
     const payload: RealEstateDemoPayload = {
       ...defaultRealEstatePayload,
       businessName: businessName.trim(),
-      industry: "Real Estate",
+      industry: industry.name as RealEstateDemoPayload["industry"],
       customerName: s.customerName,
       inquiry,
       channel: s.channel,
@@ -108,12 +108,17 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
     }, STEP_MS);
 
     try {
-      const res = await fetch("/api/demo/real-estate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      const result = (await res.json()) as DemoResult;
+      let result: DemoResult;
+      if (industry.id === "real-estate") {
+        const res = await fetch("/api/demo/real-estate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        result = (await res.json()) as DemoResult;
+      } else {
+        result = industry.createFallbackResult(payload);
+      }
       window.localStorage.setItem(STORAGE_KEYS.demoPayload, JSON.stringify(payload));
       window.localStorage.setItem(STORAGE_KEYS.demoResult, JSON.stringify(result));
       await sendGeneratedSnapshot(payload, result);
@@ -245,7 +250,9 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
               placeholder={
                 industry.id === "law-firm"
                   ? "e.g. Tamarindo Legal Group"
-                  : "e.g. Tamarindo Luxury Realty"
+                  : industry.id === "property-management"
+                    ? "e.g. Tamarindo Beach Rentals"
+                    : "e.g. Tamarindo Luxury Realty"
               }
               value={businessName}
               onChange={(e) => setBusinessName(e.target.value)}
@@ -319,7 +326,12 @@ export function DemoWizard({ defaultIndustryId }: { defaultIndustryId?: string }
         <p className="eyebrow">{industry.name} · Step 2 of 3</p>
         <h1 className="mt-4 text-3xl font-black leading-[1.05] tracking-tight text-ink sm:text-4xl">
           What kind of{" "}
-          {industry.id === "law-firm" ? "matter" : "lead"} just came in for{" "}
+          {industry.id === "law-firm"
+            ? "matter"
+            : industry.id === "property-management"
+              ? "request"
+              : "lead"}{" "}
+          just came in for{" "}
           <span className="text-gold">{businessName}</span>?
         </h1>
         <p className="mt-3 text-sm leading-6 text-stone-600">

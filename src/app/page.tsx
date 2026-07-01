@@ -199,16 +199,19 @@ export default function HomePage() {
                 </Link>
               </div>
 
-              {/* Property Management — preview */}
-              <div className="relative rounded-xl border border-black/10 bg-white/40 p-6 opacity-60">
-                <span className="absolute right-4 top-4 rounded-sm border border-black/15 px-2 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-stone-500">
-                  Coming Soon
+              {/* Property Management - live */}
+              <div className="relative rounded-xl border-2 border-ink bg-white/80 p-6 shadow-soft">
+                <span className="absolute right-4 top-4 rounded-sm bg-gold px-2 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-ink">
+                  Live
                 </span>
-                <Home className="h-6 w-6 text-stone-400" aria-hidden="true" />
+                <Home className="h-6 w-6 text-gold" aria-hidden="true" />
                 <h3 className="mt-4 text-lg font-black text-ink">Property Management</h3>
-                <p className="mt-2 text-xs leading-5 text-stone-500">
+                <p className="mt-2 text-xs leading-5 text-stone-600">
                   Maintenance requests, tenant inquiries, and owner reporting.
                 </p>
+                <Link href="/demo/property-management" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-ink underline-offset-2 hover:text-gold">
+                  Run demo <ArrowRight className="h-3 w-3" aria-hidden="true" />
+                </Link>
               </div>
 
               {/* Hotels — preview */}

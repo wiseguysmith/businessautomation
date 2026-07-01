@@ -109,6 +109,54 @@ const lawFirmScenarios: Scenario[] = [
   }
 ];
 
+/* Property Management */
+const propertyManagementScenarios: Scenario[] = [
+  {
+    id: "emergency-maintenance",
+    title: "Emergency Maintenance",
+    description: "Tenant reports a high-urgency issue after hours.",
+    customerName: "Marisol",
+    inquiry: "The AC unit is leaking water into the hallway and the guest checks in tomorrow morning. Can someone help tonight?",
+    channel: "WhatsApp",
+    budget: "",
+    timeline: "Tonight",
+    propertyType: "Emergency Maintenance"
+  },
+  {
+    id: "tenant-complaint",
+    title: "Tenant Complaint",
+    description: "Noise, access, or service complaint that needs a calm response.",
+    customerName: "James",
+    inquiry: "The neighbors have been loud for three nights and no one has replied to my last message. I need this handled today.",
+    channel: "Email",
+    budget: "",
+    timeline: "Today",
+    propertyType: "Tenant Complaint"
+  },
+  {
+    id: "owner-update",
+    title: "Owner Update Request",
+    description: "Property owner wants a status update without digging through messages.",
+    customerName: "Linda",
+    inquiry: "Can you send me an update on the plumbing repair, current guest status, and whether the cleaning invoice was paid?",
+    channel: "Website",
+    budget: "",
+    timeline: "This week",
+    propertyType: "Owner Update"
+  },
+  {
+    id: "rental-inquiry",
+    title: "New Rental Inquiry",
+    description: "Prospective renter asks about availability, timing, and fit.",
+    customerName: "Mateo",
+    inquiry: "Is the 2-bedroom condo available for three months starting next month? We have a small dog and need reliable internet.",
+    channel: "Instagram",
+    budget: "3200",
+    timeline: "Next month",
+    propertyType: "Rental Inquiry"
+  }
+];
+
 function createLawFirmFallback(payload: RealEstateDemoPayload): DemoResult {
   const inquiry = payload.inquiry.toLowerCase();
   const timeline = payload.timeline.toLowerCase();
@@ -180,6 +228,73 @@ function createLawFirmFallback(payload: RealEstateDemoPayload): DemoResult {
   };
 }
 
+function createPropertyManagementFallback(payload: RealEstateDemoPayload): DemoResult {
+  const category = payload.propertyType;
+  const inquiry = payload.inquiry.toLowerCase();
+  const timeline = payload.timeline.toLowerCase();
+  const isEmergency =
+    category === "Emergency Maintenance" ||
+    timeline.includes("tonight") ||
+    inquiry.includes("leaking") ||
+    inquiry.includes("water") ||
+    inquiry.includes("guest checks in");
+  const isComplaint = category === "Tenant Complaint";
+  const isOwner = category === "Owner Update";
+
+  const urgencyScore = isEmergency ? 94 : isComplaint ? 81 : isOwner ? 67 : 58;
+  const urgencyLabel =
+    urgencyScore >= 90 ? "Emergency" : urgencyScore >= 80 ? "High Priority" : urgencyScore >= 65 ? "Needs Update" : "Standard";
+
+  const draftResponse = isEmergency
+    ? `Hi ${payload.customerName}, thank you for flagging this right away. I am escalating this as an urgent maintenance issue now and will contact our on-call vendor. Please send a quick photo or video of the leak if you can, and we will update you as soon as the technician confirms timing.`
+    : isComplaint
+      ? `Hi ${payload.customerName}, I am sorry this has not been resolved yet. I am logging this as a high-priority tenant issue and escalating it to the property manager today. We will follow up with the next action and timing as soon as it is confirmed.`
+      : isOwner
+        ? `Hi ${payload.customerName}, absolutely. I am preparing an owner update covering the repair status, guest status, and cleaning invoice so you have one clear summary instead of chasing separate messages.`
+        : `Hi ${payload.customerName}, thank you for reaching out. I can help confirm availability, pet policy, internet reliability, and next steps for the three-month stay. I will collect the key details and follow up with options that fit your timeline.`;
+
+  const spanishDraftResponse = isEmergency
+    ? `Hola ${payload.customerName}, gracias por avisarnos de inmediato. Estoy escalando esto como una solicitud urgente de mantenimiento y contactaré al proveedor de guardia. Si puede, envíe una foto o video de la fuga y le actualizaremos apenas el técnico confirme el horario.`
+    : isComplaint
+      ? `Hola ${payload.customerName}, lamento que esto no se haya resuelto todavía. Estoy registrando este caso como una solicitud de alta prioridad y lo escalaré al administrador de la propiedad hoy. Le daremos seguimiento con la próxima acción y el horario confirmado.`
+      : isOwner
+        ? `Hola ${payload.customerName}, claro. Estoy preparando una actualización para propietario con el estado de la reparación, el estado del huésped y la factura de limpieza para que tenga un resumen claro sin revisar varios mensajes.`
+        : `Hola ${payload.customerName}, gracias por comunicarse. Puedo ayudar a confirmar disponibilidad, política de mascotas, calidad del internet y próximos pasos para la estadía de tres meses. Reuniré los detalles clave y enviaré opciones que se ajusten a su fecha.`;
+
+  return {
+    leadType: category || "Property Request",
+    urgencyScore,
+    urgencyLabel,
+    estimatedOpportunity: isEmergency
+      ? "Guest-readiness risk - fast response can prevent refund, review, and owner escalation"
+      : isComplaint
+        ? "Tenant retention risk - visible action today can prevent escalation"
+        : isOwner
+          ? "Owner trust opportunity - proactive reporting reduces churn"
+          : "Rental revenue opportunity - qualify and respond before the prospect books elsewhere",
+    draftResponse,
+    spanishDraftResponse,
+    recommendedAction: isEmergency
+      ? "Alert manager and on-call vendor immediately; send tenant an update within 10 minutes."
+      : isComplaint
+        ? "Acknowledge the complaint, log it, assign owner, and confirm next action today."
+        : isOwner
+          ? "Send a consolidated owner update with repair, guest, invoice, and next-step status."
+          : "Confirm availability, qualify dates/pets/internet needs, and send next-step booking details.",
+    riskNote: isEmergency
+      ? "After-hours maintenance issues can quickly become refund requests, poor reviews, and owner complaints."
+      : isComplaint
+        ? "Delayed tenant communication creates avoidable conflict and more manager follow-up."
+        : isOwner
+          ? "Owners often judge the management company by update quality, not only task completion."
+          : "Rental inquiries are time-sensitive; a slow reply can send the guest to another listing.",
+    logged: false,
+    notificationSent: false,
+    fallback: true,
+    message: "Property management demo simulation loaded."
+  };
+}
+
 /* ── Registry ─────────────────────────────────────────── */
 export const industryRegistry: Record<string, IndustryConfig> = {
   "real-estate": {
@@ -236,23 +351,24 @@ export const industryRegistry: Record<string, IndustryConfig> = {
     name: "Property Management",
     description: "Maintenance requests, tenant inquiries, and owner reporting.",
     iconName: "Home",
-    status: "preview",
-    scenarios: [],
-    workflowSteps: [],
-    aiRoles: [],
-    createFallbackResult: () => ({
-      leadType: "Tenant Request",
-      urgencyScore: 60,
-      urgencyLabel: "Standard",
-      estimatedOpportunity: "Tenant retention opportunity",
-      draftResponse: "",
-      spanishDraftResponse: "",
-      recommendedAction: "Follow up today.",
-      riskNote: "",
-      logged: false,
-      notificationSent: false,
-      fallback: true
-    })
+    status: "live",
+    scenarios: propertyManagementScenarios,
+    workflowSteps: [
+      "Request Received",
+      "AI Triage",
+      "Issue Classified",
+      "Urgency Scored",
+      "Response Drafted",
+      "Logged to Sheet",
+      "Manager Notified"
+    ],
+    aiRoles: [
+      { name: "AI Maintenance Triage Specialist", description: "Separates emergency maintenance from routine requests instantly." },
+      { name: "AI Tenant Communications Assistant", description: "Drafts calm, bilingual replies before frustration escalates." },
+      { name: "AI Owner Update Coordinator", description: "Turns scattered status notes into owner-ready updates." },
+      { name: "AI Operations Logger", description: "Logs every request so managers can see what needs action." }
+    ],
+    createFallbackResult: createPropertyManagementFallback
   }
 };
 

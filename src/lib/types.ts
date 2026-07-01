@@ -1,5 +1,7 @@
 export type Industry =
   | "Real Estate"
+  | "Law Firm"
+  | "Property Management"
   | "Hotel"
   | "Restaurant"
   | "Property Manager"
@@ -32,7 +34,7 @@ export interface OpportunitySnapshotResult {
 
 export interface RealEstateDemoPayload {
   businessName: string;
-  industry: "Real Estate";
+  industry: "Real Estate" | "Law Firm" | "Property Management";
   customerName: string;
   inquiry: string;
   channel: string;
